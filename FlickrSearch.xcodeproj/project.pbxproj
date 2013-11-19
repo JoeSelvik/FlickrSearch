@@ -45,6 +45,7 @@
 		88C6C6AA1835B63300A5C3DA /* FlickrPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C6C6A81835B63300A5C3DA /* FlickrPhoto.m */; };
 		88C6C6AD1835E7C900A5C3DA /* XYZFlickrPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C6C6AC1835E7C900A5C3DA /* XYZFlickrPhotoCell.m */; };
 		88C6C6B018369B2100A5C3DA /* XYZFlickrPhotoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C6C6AF18369B2100A5C3DA /* XYZFlickrPhotoHeaderView.m */; };
+		88C6C6B9183A6E9000A5C3DA /* XYZFlickrPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C6C6B8183A6E9000A5C3DA /* XYZFlickrPhotoViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,8 @@
 		88C6C6AC1835E7C900A5C3DA /* XYZFlickrPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XYZFlickrPhotoCell.m; path = ../XYZFlickrPhotoCell.m; sourceTree = "<group>"; };
 		88C6C6AE18369B2100A5C3DA /* XYZFlickrPhotoHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYZFlickrPhotoHeaderView.h; sourceTree = "<group>"; };
 		88C6C6AF18369B2100A5C3DA /* XYZFlickrPhotoHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYZFlickrPhotoHeaderView.m; sourceTree = "<group>"; };
+		88C6C6B7183A6E9000A5C3DA /* XYZFlickrPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYZFlickrPhotoViewController.h; sourceTree = "<group>"; };
+		88C6C6B8183A6E9000A5C3DA /* XYZFlickrPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYZFlickrPhotoViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +175,8 @@
 				88C6C6A51835B63300A5C3DA /* Flickr.h */,
 				88C6C6A61835B63300A5C3DA /* Flickr.m */,
 				88C6C6A71835B63300A5C3DA /* FlickrPhoto.h */,
+				88C6C6B7183A6E9000A5C3DA /* XYZFlickrPhotoViewController.h */,
+				88C6C6B8183A6E9000A5C3DA /* XYZFlickrPhotoViewController.m */,
 				88C6C6A81835B63300A5C3DA /* FlickrPhoto.m */,
 				88C6C65C1835A57E00A5C3DA /* XYZViewController.h */,
 				88C6C65D1835A57E00A5C3DA /* XYZViewController.m */,
@@ -358,6 +363,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88C6C6B9183A6E9000A5C3DA /* XYZFlickrPhotoViewController.m in Sources */,
 				88C6C65E1835A57E00A5C3DA /* XYZViewController.m in Sources */,
 				88C6C6581835A57E00A5C3DA /* XYZAppDelegate.m in Sources */,
 				88C6C6A91835B63300A5C3DA /* Flickr.m in Sources */,

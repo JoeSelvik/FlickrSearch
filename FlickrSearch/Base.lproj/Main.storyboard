@@ -82,12 +82,12 @@
                                     <rect key="frame" x="0.0" y="0.0" width="728" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vr0-sH-TUK">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vr0-sH-TUK">
                                             <rect key="frame" x="0.0" y="0.0" width="728" height="90"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w7l-dd-p8J">
-                                            <rect key="frame" x="318" y="27" width="92" height="36"/>
+                                            <rect key="frame" x="212" y="27" width="304" height="36"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                             <color key="textColor" red="0.0" green="0.29894181902114969" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -112,10 +112,49 @@
                         <outlet property="shareButton" destination="dv0-1A-uot" id="Dpi-E7-tqe"/>
                         <outlet property="textField" destination="Ure-tm-4UV" id="nt1-Ua-PTU"/>
                         <outlet property="toolbar" destination="KtP-vz-hG9" id="HIR-h5-tT7"/>
+                        <segue destination="Tcm-vB-WvP" kind="modal" identifier="ShowFlickrPhoto" modalPresentationStyle="formSheet" id="Nx1-27-aYQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+        </scene>
+        <!--Flickr Photo View Controller-->
+        <scene sceneID="SL4-Hi-OHW">
+            <objects>
+                <viewController id="Tcm-vB-WvP" customClass="XYZFlickrPhotoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mki-Dw-SFf"/>
+                        <viewControllerLayoutGuide type="bottom" id="2wF-Vp-Rwn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wN2-Zu-GuQ">
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6af-YS-RJs">
+                                <rect key="frame" x="0.0" y="0.0" width="540" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Done" id="qZq-N4-daC">
+                                        <connections>
+                                            <action selector="done:" destination="Tcm-vB-WvP" id="qPI-RU-aPq"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I7o-jD-G87">
+                                <rect key="frame" x="0.0" y="44" width="540" height="576"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="I7o-jD-G87" id="Z0q-na-3jw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="seu-xm-2gd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1176" y="-188"/>
         </scene>
     </scenes>
     <resources>

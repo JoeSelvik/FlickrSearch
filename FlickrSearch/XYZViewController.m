@@ -11,6 +11,7 @@
 #import "FlickrPhoto.h"
 #import "XYZFlickrPhotoCell.h"
 #import "XYZFlickrPhotoHeaderView.h"
+#import "XYZFlickrPhotoViewController.h"
 
 @interface XYZViewController () <UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 // These only nee to be visible to the ViewController class
@@ -28,6 +29,11 @@
 
 // Outlet for the UICollectionView
 @property(nonatomic, weak) IBOutlet UICollectionView *collectionView;
+
+// Controls what happens when a user taps the share button
+// true when the user is making a multi-selection to share images
+// normal setting will be false (which means tapping an image will bring up the modal detail view)
+@property (nonatomic) BOOL sharing;
 
 @end
 
@@ -62,7 +68,7 @@
     // Default UICollectionViewCell
     // [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"FlickrCell"];
     // Custom UICollectionViewCell
-    // 
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -133,7 +139,14 @@
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO: Select Item
+    if (!self.sharing) {
+        NSString *searchTerm = self.searches[indexPath.section];
+        FlickrPhoto *photo = self.searchResults[searchTerm][indexPath.row];
+        [self performSegueWithIdentifier:@"ShowFlickrPhoto" sender:photo];
+        [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    } else {
+        // Todo: Multi-Selection
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -156,6 +169,14 @@
 // 3 - returns the spacing between the cells, headers, and footers.
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     return UIEdgeInsetsMake(50, 20, 50, 20);
+}
+
+#pragma mark - Segue
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"ShowFlickrPhoto"]) {
+        XYZFlickrPhotoViewController *flickrPhotoViewController = segue.destinationViewController;
+        flickrPhotoViewController.flickrPhoto = sender;
+    }
 }
 
 @end
