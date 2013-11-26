@@ -12,9 +12,9 @@
 #import "XYZFlickrPhotoCell.h"
 #import "XYZFlickrPhotoHeaderView.h"
 #import "XYZFlickrPhotoViewController.h"
+#import <MessageUI/MessageUI.h>
 
-@interface XYZViewController () <UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
-// These only nee to be visible to the ViewController class
+@interface XYZViewController () <UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MFMailComposeViewControllerDelegate>
 
 // View properties
 @property(nonatomic, weak) IBOutlet UIToolbar *toolbar;
@@ -34,6 +34,9 @@
 // true when the user is making a multi-selection to share images
 // normal setting will be false (which means tapping an image will bring up the modal detail view)
 @property (nonatomic) BOOL sharing;
+
+// For multiple photo selection mode
+@property(nonatomic, strong) NSMutableArray *selectedPhotos;
 
 @end
 
@@ -69,6 +72,9 @@
     // [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"FlickrCell"];
     // Custom UICollectionViewCell
     
+    // Initialize multiple photo selection array
+    self.selectedPhotos = [@[] mutableCopy];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,8 +85,37 @@
 
 
 -(IBAction)shareButtonTapped:(id)sender {
-    // TODO
+    UIBarButtonItem *shareButton = (UIBarButtonItem *)sender;
+    
+    // 1 - If the user currently isn’t in sharing mode, this code sets the UICollectionView to
+    // allow multiple selection and changes the Share button title to Done.
+    if (!self.sharing) {
+        self.sharing = YES;
+        [shareButton setStyle:UIBarButtonItemStyleDone];
+        [shareButton setTitle:@"Done"];
+        [self.collectionView setAllowsMultipleSelection:YES];
+    } else {
+        // 2 - the user is already in sharing mode and has tapped on the Done button. Switch the button
+        // title back to Share and disable UICollectionView multi-selection.
+        self.sharing = NO;
+        [shareButton setStyle:UIBarButtonItemStyleBordered];
+        [shareButton setTitle:@"Share"];
+        [self.collectionView setAllowsMultipleSelection:NO];
+        
+        // 3 - Check if the user has any selected photos, and if so, call showMailComposerAndSend.
+        if ([self.selectedPhotos count] > 0) {
+            [self showMailComposerAndSend];
+        }
+        
+        // 4 - Deselect all of the selected cells and remove all photos from the selectedPhotos array.
+        for(NSIndexPath *indexPath in self.collectionView.indexPathsForSelectedItems) {
+            [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
+        }
+        
+        [self.selectedPhotos removeAllObjects];
+    }
 }
+
 
 #pragma mark - UITextFieldDelegate methods
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -140,17 +175,26 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!self.sharing) {
+        // Single-Selection
         NSString *searchTerm = self.searches[indexPath.section];
         FlickrPhoto *photo = self.searchResults[searchTerm][indexPath.row];
         [self performSegueWithIdentifier:@"ShowFlickrPhoto" sender:photo];
         [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
     } else {
-        // Todo: Multi-Selection
+        // Multi-Selection
+        NSString *searchTerm = self.searches[indexPath.section];
+        FlickrPhoto *photo = self.searchResults[searchTerm][indexPath.row];
+        [self.selectedPhotos addObject:photo];
     }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    // TODO: Deselect item
+    // Deselect item
+    if (self.sharing) {
+        NSString *searchTerm = self.searches[indexPath.section];
+        FlickrPhoto *photo = self.searchResults[searchTerm][indexPath.row];
+        [self.selectedPhotos removeObject:photo];
+    }
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout
@@ -176,6 +220,27 @@
     if ([segue.identifier isEqualToString:@"ShowFlickrPhoto"]) {
         XYZFlickrPhotoViewController *flickrPhotoViewController = segue.destinationViewController;
         flickrPhotoViewController.flickrPhoto = sender;
+    }
+}
+
+-(void)showMailComposerAndSend {
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
+        mailer.mailComposeDelegate = self;
+        
+        [mailer setSubject:@"Check out these Flickr Photos"];
+        NSMutableString *emailBody = [NSMutableString string];
+        for(FlickrPhoto *flickrPhoto in self.selectedPhotos)
+        {
+            NSString *url = [Flickr flickrPhotoURLForFlickrPhoto: flickrPhoto size:@"m"];
+            [emailBody appendFormat:@"<div><img src='%@'></div><br>",url];
+        }
+        
+        [mailer setMessageBody:emailBody isHTML:YES];
+        [self presentViewController:mailer animated:YES completion:^{}];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mail Failure" message:@"Your device doesn't support in-app email" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
     }
 }
 
